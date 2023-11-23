@@ -9,6 +9,8 @@ class Achievement extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'type', 'position', 'value'];   
+
     public function awardTo(User $user) 
     {
         $this->users()->attach($user);
