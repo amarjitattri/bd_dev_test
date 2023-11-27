@@ -19,7 +19,6 @@ class AchievementFactory extends Factory
         return [
             'name' => fake()->sentence(),
             'type' => fake()->word(),
-            'position' => fake()->randomDigit(),
             'value' => fake()->randomDigit(2),
         ];
     }

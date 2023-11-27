@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AchievementUnlocked;
 use App\Events\LessonWatched;
+use App\Listeners\UnlockCommentWrittenAchievements;
 use App\Listeners\UnlockLessonWatchedAchievements;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        CommentWritten::class => [
+            UnlockCommentWrittenAchievements::class,
         ],
         LessonWatched::class => [
             UnlockLessonWatchedAchievements::class,

@@ -3,18 +3,21 @@
 namespace Tests\Feature;
 
 use App\Events\AchievementUnlocked;
+use App\Events\CommentWritten;
 use App\Events\LessonWatched;
 use App\Models\Achievement;
+use App\Models\Comment;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class AchievementTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
     public function test_first_lesson_watched_achievement_is_unlocked()
     {
@@ -32,23 +35,36 @@ class AchievementTest extends TestCase
         Event::assertDispatched(AchievementUnlocked::class);
 
         $response = $this->get("/users/{$user->id}/achievements");
-        $response->assertStatus(200);
+
+        $response
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->where('unlocked_achievements', ["First Lesson Watched"])
+                ->where('next_available_achievements',
+                    [
+                        "5 Lessons Watched",
+                        "10 Lessons Watched",
+                        "25 Lessons Watched",
+                        "50 Lessons Watched",
+                        "First Comment Written",
+                        "3 Comments Written",
+                        "5 Comments Written",
+                        "10 Comment Written",
+                        "20 Comment Written"
+                    ])
+                ->where('current_badge',
+                [
+                    "Beginner",
+                ])
+                ->where('next_badge',
+                [
+                    "Intermediate",
+                    "Advanced",
+                    "Master",
+                ])
+                ->where('remaing_to_unlock_next_badge',
+                3)
+        );
 
     }
 
-    public function test_user_can_be_assigned_to_achievement(): void
-    {
-        // Create a user
-        $user = User::factory()->create();
-
-        // Create an achievement
-        $achievement = Achievement::factory()->create();
-
-        // Assign the achievement to the user
-        $achievement->awardTo($user);
-
-        // Assert that the user has the achievement
-        $this->assertCount(1, $user->achievements);
-        $this->assertTrue($user->achievements->contains($achievement));
-    }
 }

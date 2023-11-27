@@ -5,20 +5,22 @@ namespace App\Achievements\Types;
 use App\Events\AchievementUnlocked;
 use App\Models\Achievement;
 
-class FirstLessonWatched extends AchievementsType {
+class FiveLessonsWatched extends AchievementsType {
 
+    public string $name = '5 Lessons Watched'; // Name of the achievement
     public string $type = 'lesson'; // Type of achievement: comment or lesson
-    public int $value = 1; // Value required to unlock the achievement
+    public int $value = 5; // Value required to unlock the achievement
+
 
     /**
-     * Check if the user qualifies for the 'First Lesson Watched' achievement.
+     * Check if the user qualifies for the '5 Lessons Watched' achievement.
      *
      * @param mixed $user The user object to check for achievement qualification.
      * @return bool True if the user qualifies for the achievement; otherwise, false.
      */
     public function qualifier($user): bool
     {
-        // Check if the user has watched exactly 1 lesson
+        // Check if the user has watched exactly 5 lessons
         if (isset($user->lessons) && $user->lessons->count() == $this->value) {
 
             // Fire AchievementUnlocked event for unlocking the achievement
@@ -26,8 +28,8 @@ class FirstLessonWatched extends AchievementsType {
 
             return true; // User qualifies for the achievement
         }
-
-        return false; // User does not qualify for the achievement
+        
+        return false; //User does not qualify for the achievement
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,11 +11,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AchievementUnlocked
+class BadgeUnlocked
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $achievement_name;
+    public $badge_name;
     public $user;
 
     /**
@@ -24,9 +23,9 @@ class AchievementUnlocked
      *
      * @return void
      */
-    public function __construct($achievement_name, User $user)
+    public function __construct($badge_name, User $user)
     {
-        $this->achievement_name = $achievement_name;
+        $this->badge_name = $badge_name;
         $this->user = $user;
     }
 }
